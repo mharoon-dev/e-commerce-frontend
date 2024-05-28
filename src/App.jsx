@@ -11,22 +11,29 @@ import { Payment } from "@mui/icons-material";
 import Success from "./Components/Success";
 
 function App() {
+  const user = true;
   return (
     <>
-          <BrowserRouter>
+      <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products/:category" element={<ProductList />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
           <Route
-            path="/pay"
-            element={<Pay />}
+            path="/login"
+            element={user ? <Navigate to="/" /> : <Login />}
           />
           <Route
-            path="/success"
-            element={<Success />}
+            path="/register"
+            element={user ? <Navigate to="/" /> : <Register />}
           />
-          </Routes>
+          <Route path="/pay" element={<Pay />} />
+          <Route path="/success" element={<Success />} />
+        </Routes>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
 export default App;
