@@ -6,8 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import noAvatar from "../../public/assets/noAvatar.png";
 
-const KEY =
-  "pk_test_51PDVVW2MdE2JOYS8Rd1YZfj0TgyH2vagXXRrlLYbaihyFv3tng7cgdL7q2PXebA3kqBz8I63lN4bfzpEGhfw5lDs00CXYwLMpm";
+// const KEY =
+//   "pk_test_51PDVVW2MdE2JOYS8Rd1YZfj0TgyH2vagXXRrlLYbaihyFv3tng7cgdL7q2PXebA3kqBz8I63lN4bfzpEGhfw5lDs00CXYwLMpm";
 
 const Container = styled.div`
   height: 100vh;
@@ -34,29 +34,29 @@ const api = axios.create({
 });
 
 function Pay() {
-  const [stripeToken, setStripeToken] = useState(null);
-  const navigate = useNavigate();
+  // const [stripeToken, setStripeToken] = useState(null);
+  // const navigate = useNavigate();
 
-  const onToken = (token) => {
-    // console.log(token)
-    setStripeToken(token);
-  };
+  // const onToken = (token) => {
+  //   // console.log(token)
+  //   setStripeToken(token);
+  // };
 
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await api.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 2000,
-        });
-        console.log(res.data);
-        navigate("/success");
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken , navigate]);
+  // useEffect(() => {
+  //   const makeRequest = async () => {
+  //     try {
+  //       const res = await api.post("/checkout/payment", {
+  //         tokenId: stripeToken.id,
+  //         amount: 2000,
+  //       });
+  //       console.log(res.data);
+  //       navigate("/success");
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   stripeToken && makeRequest();
+  // }, [stripeToken, navigate]);
   return (
     <>
       <Container>

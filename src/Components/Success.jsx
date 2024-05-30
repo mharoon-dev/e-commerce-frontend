@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -21,12 +22,14 @@ const Button = styled.button`
 `;
 
 function Success() {
+  const location = useLocation();
+  console.log(location);
   return (
     <>
       <Container>
-          <Button>Successfull</Button>
-          <p> Thank you for your purchasing</p>
-        </Container>
+        <Button>Successfull</Button>
+        <p> Thank you for your purchasing</p>
+      </Container>
     </>
   );
 }

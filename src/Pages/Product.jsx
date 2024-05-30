@@ -8,6 +8,8 @@ import { mobile } from "../responsive";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { publicRequest } from "../requestMethod.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addProduct } from "../redux/Slices/cartSlice.jsx";
 
 const Container = styled.div``;
 
@@ -124,6 +126,8 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const location = useLocation();
   const id = location.pathname.split("/")[2];
   const [product, setProduct] = useState({});
@@ -143,6 +147,18 @@ const Product = () => {
     };
     getProduct();
   }, [id]);
+
+  const handleClick = () => {
+    if (color === "" || size === "" || quantity < 1) {
+      alert("Please select a color, size and quantity");
+    } else {
+      dispatch(addProduct({ ...product, quantity, color, size }));
+    }
+  };
+  console.log(cart);
+
+  
+
   return (
     <Container>
       <Navbar />
@@ -154,23 +170,20 @@ const Product = () => {
 
         <InfoContainer>
           <Title>{product.title}</Title>
-          <Desc>
-            {product.desc}
-          </Desc>
+          <Desc>{product.desc}</Desc>
           <Price>${product.price}</Price>
 
           <FilterContainer>
             <Filter>
               <FilterTitle>Color</FilterTitle>
-              { product.color?.map((c) => (
+              {product.color?.map((c) => (
                 <FilterColor color={c} key={c} onClick={() => setColor(c)} />
               ))}
-
             </Filter>
             <Filter>
               <FilterTitle>Size</FilterTitle>
               <FilterSize onChange={(e) => setSize(e.target.value)}>
-                { product.size?.map((s) => (
+                {product.size?.map((s) => (
                   <FilterSizeOption key={s}>{s}</FilterSizeOption>
                 ))}
               </FilterSize>
@@ -179,11 +192,13 @@ const Product = () => {
 
           <AddContainer>
             <AmountContainer>
-              <Remove onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)} />
+              <Remove
+                onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
+              />
               <Amount>{quantity}</Amount>
-              <Add  onClick={() => setQuantity(quantity + 1)} />
+              <Add onClick={() => setQuantity(quantity + 1)} />
             </AmountContainer>
-            <Button>ADD TO CART</Button>
+            <Button onClick={handleClick}>ADD TO CART</Button>
           </AddContainer>
         </InfoContainer>
       </Wrapper>
