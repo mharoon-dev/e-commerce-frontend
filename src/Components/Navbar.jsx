@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
+width: 100%;
   height: 60px;
   ${mobile({ height: "50px" })}
 `;
@@ -63,8 +64,9 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
+  width: auto ;
 
-  ${mobile({ fontSize: "18px" })}
+  ${mobile({ fontSize: "18px" , marginLeft: "50px"})}
 `;
 
 const Right = styled.div`
@@ -81,10 +83,11 @@ const MenuItem = styled.div`
   cursor: pointer;
   margin-left: 25px;
 
-  ${mobile({ fontSize: "12px", marginLeft: "10px" })}
+  ${mobile({ fontSize: "12px", marginLeft: "50px" })}
 `;
 
 function Navbar() {
+  const user = useSelector((state) => state.user.currentUser);
   const quantity = useSelector((state) => state.cart.quantity);
   console.log(quantity);
   return (
@@ -110,10 +113,17 @@ function Navbar() {
           </Link>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          <Link
+            to="/register"
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            {!user && <MenuItem>REGISTER</MenuItem>}
+          </Link>
+          <Link to="/login" style={{ textDecoration: "none", color: "black" }}>
+            {!user && <MenuItem>SIGN IN</MenuItem>}
+          </Link>
           <Link to="/cart">
-            <MenuItem>
+            <MenuItem >
               <Badge badgeContent={quantity} color="secondary">
                 <ShoppingCartOutlinedIcon color="action" />
               </Badge>
