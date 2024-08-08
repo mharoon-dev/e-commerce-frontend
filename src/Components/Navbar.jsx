@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
-width: 100%;
+  width: 100%;
   height: 60px;
   ${mobile({ height: "50px" })}
 `;
@@ -64,9 +64,9 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
-  width: auto ;
+  width: auto;
 
-  ${mobile({ fontSize: "18px" , marginLeft: "50px"})}
+  ${mobile({ fontSize: "18px", marginLeft: "50px" })}
 `;
 
 const Right = styled.div`
@@ -88,6 +88,7 @@ const MenuItem = styled.div`
 
 function Navbar() {
   const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const quantity = useSelector((state) => state.cart.quantity);
   console.log(quantity);
   return (
@@ -123,7 +124,7 @@ function Navbar() {
             {!user && <MenuItem>SIGN IN</MenuItem>}
           </Link>
           <Link to="/cart">
-            <MenuItem >
+            <MenuItem>
               <Badge badgeContent={quantity} color="secondary">
                 <ShoppingCartOutlinedIcon color="action" />
               </Badge>

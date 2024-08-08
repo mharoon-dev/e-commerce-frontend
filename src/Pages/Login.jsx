@@ -2,7 +2,14 @@ import styled from "styled-components";
 import { mobile } from "../responsive";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/apiCalls";
+import {
+  loginFailure,
+  loginStart,
+  loginSuccess,
+} from "../../../admin/src/Redux/Slices/userSlice";
+import { BASE_URL } from "../../../admin/src/utils/urls.jsx";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -59,16 +66,21 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.a`
-  margin: 5px 0px;
-  font-size: 12px;
-  text-decoration: underline;
-  cursor: pointer;
-`;
+// const Link = styled.a`
+//   margin: 5px 0px;
+//   font-size: 12px;
+//   text-decoration: underline;
+//   cursor: pointer;
+// `;
 
 const Error = styled.span`
   color: red;
 `;
+
+export const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -78,9 +90,28 @@ const Login = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
-  };
+    if (username && password) {
+      dispatch(loginStart());
+      api
+        .post("/auth/login", {
+          username,
+          password,
+        })
+        .then((res) => {
+          console.log(res.data);
+          localStorage.setItem("token", JSON.stringify(res.data.accessToken));
+          dispatch(loginSuccess(res.data.data));
 
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err);
+          dispatch(loginFailure());
+        });
+    } else {
+      toast.error("Please fill all the fields 📝");
+    }
+  };
   return (
     <Container>
       <Wrapper>
@@ -99,9 +130,20 @@ const Login = () => {
           <Button onClick={handleClick} disabled={isFetching}>
             LOGIN
           </Button>
-          {error && <Error>Something went wrong...</Error>}
-          <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          {/* {error && <Error>Something went wrong...</Error>} */}
+
+          <Link
+            to="/register"
+            style={{
+              margin: "5px 0px",
+              fontSize: "12px",
+              textDecoration: "underline",
+              cursor: "pointer",
+              color: "teal",
+            }}
+          >
+            CREATE A NEW ACCOUNT
+          </Link>
         </Form>
       </Wrapper>
     </Container>

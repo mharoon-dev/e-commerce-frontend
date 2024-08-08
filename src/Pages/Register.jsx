@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
+import { useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../../../admin/src/utils/urls";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -10,7 +14,6 @@ const Container = styled.div`
     ),
     url("https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
       center;
-  /* background-size: cover; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,23 +58,69 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+export const api = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
+
 const Register = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (username && email && password) {
+      const data = {
+        username,
+        email,
+        password,
+      };
+      console.log(data);
+
+      api
+        .post("/auth/register", data)
+        .then((res) => {
+          console.log(res.data);
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err.response.data);
+          // toast.error(err?.response?.data?.message || err.message);
+          // dispatch(loginFailure());
+        });
+    } else {
+      alert("Please fill all the fields 📝");
+    }
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input placeholder="name" />
-          <Input placeholder="last name" />
-          <Input placeholder="username" />
-          <Input placeholder="email" />
-          <Input placeholder="password" />
-          <Input placeholder="confirm password" />
+        <Form onSubmit={handleClick}>
+          <Input
+            type="text"
+            placeholder="username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            type="email"
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            type="password"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button type="submit">CREATE</Button>
         </Form>
       </Wrapper>
     </Container>
