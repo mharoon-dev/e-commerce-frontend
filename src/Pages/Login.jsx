@@ -10,6 +10,7 @@ import {
 import { BASE_URL } from "../../../admin/src/utils/urls.jsx";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   width: 100vw;
@@ -83,6 +84,7 @@ export const api = axios.create({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();

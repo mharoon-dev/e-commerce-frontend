@@ -59,7 +59,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={user ? <Home /> : <Login />} />
+          <Route path="/" element={<Home />} />
           <Route path="/products/:category" element={<ProductList />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />

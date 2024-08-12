@@ -83,7 +83,7 @@ const Register = () => {
         .post("/auth/register", data)
         .then((res) => {
           console.log(res.data);
-          navigate("/");
+          navigate("/login");
         })
         .catch((err) => {
           console.log(err);
