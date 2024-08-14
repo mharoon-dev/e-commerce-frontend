@@ -102,7 +102,7 @@ const Login = () => {
         .then((res) => {
           console.log(res.data);
           localStorage.setItem("token", JSON.stringify(res.data.accessToken));
-          dispatch(loginSuccess(res.data.data));
+          dispatch(loginSuccess(res.data));
 
           navigate("/");
         })

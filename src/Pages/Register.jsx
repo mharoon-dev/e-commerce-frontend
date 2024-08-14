@@ -68,6 +68,7 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [byRefrence, setByRefrence] = useState("");
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -76,6 +77,7 @@ const Register = () => {
         username,
         email,
         password,
+        byRefrence,
       };
       console.log(data);
 
@@ -115,6 +117,11 @@ const Register = () => {
             type="password"
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
+          />
+          <Input
+            type="text"
+            placeholder="Refrence code (optional)"
+            onChange={(e) => setByRefrence(e.target.value)}
           />
           <Agreement>
             By creating an account, I consent to the processing of my personal

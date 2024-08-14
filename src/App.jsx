@@ -41,7 +41,7 @@ function App() {
         });
         if (res.data) {
           console.log(res.data);
-          dispatch(loginSuccess(res.data.data));
+          dispatch(loginSuccess(res.data));
         }
       } catch (error) {
         console.log(error);
