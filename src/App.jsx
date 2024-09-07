@@ -10,7 +10,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Payment } from "@mui/icons-material";
 import Success from "./Components/Success";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BASE_URL } from "./utils/urls";
 import axios from "axios";
 import {
@@ -20,6 +20,7 @@ import {
 } from "../../admin/src/Redux/Slices/userSlice";
 
 function App() {
+  const [refUsersTotal, setRefUsersTotal] = useState(0);
   const user = useSelector((state) => state?.user?.currentUser);
   console.log(user);
   const dispatch = useDispatch();
@@ -59,10 +60,23 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <Home
+              refUsersTotal={refUsersTotal}
+              setRefUsersTotal={setRefUsersTotal}
+              />
+            }
+          />
           <Route path="/products/:category" element={<ProductList />} />
           <Route path="/product/:id" element={<Product />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route
+            path="/cart"
+            element={<Cart />}
+            refUsersTotal={refUsersTotal}
+            setRefUsersTotal={setRefUsersTotal}
+          />
           <Route
             path="/login"
             element={user ? <Navigate to="/" /> : <Login />}

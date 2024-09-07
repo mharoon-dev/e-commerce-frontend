@@ -99,7 +99,7 @@ const ProductList = () => {
       </FilterContainer>
 
       <Products cat={cat} filters={filters} sort={sort} />
-      <NewsLetter />
+      {/* <NewsLetter /> */}
       <Footer />
     </Container>
   );

@@ -1,24 +1,27 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 import Announcement from "../Components/Announcement";
-import Slider  from "../Components/Slider";
+import Slider from "../Components/Slider";
 import { Categories } from "../Components/Categories";
 import Products from "../Components/Products";
 import NewsLetter from "../Components/NewsLetter";
 import Footer from "../Components/Footer";
 
-const Home = () => {
+const Home = ({ refUsersTotal, setRefUsersTotal }) => {
   return (
     <>
       <Announcement />
-      <Navbar />
+      <Navbar
+        refUsersTotal={refUsersTotal}
+        setRefUsersTotal={setRefUsersTotal}
+      />
       <Slider />
       <Categories />
       <Products />
-      <NewsLetter />
+      {/* <NewsLetter /> */}
       <Footer />
     </>
-  )
+  );
 };
 
 export default Home;

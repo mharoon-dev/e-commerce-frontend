@@ -17,8 +17,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 
-const KEY =
-  "pk_test_51PDVVW2MdE2JOYS8Rd1YZfj0TgyH2vagXXRrlLYbaihyFv3tng7cgdL7q2PXebA3kqBz8I63lN4bfzpEGhfw5lDs00CXYwLMpm";
+// const KEY =
+//   "pk_test_51PDVVW2MdE2JOYS8Rd1YZfj0TgyH2vagXXRrlLYbaihyFv3tng7cgdL7q2PXebA3kqBz8I63lN4bfzpEGhfw5lDs00CXYwLMpm";
 
 const Container = styled.div``;
 
@@ -146,7 +146,7 @@ const Summary = styled.div`
   border: 0.5px solid lightgray;
   border-radius: 10px;
   padding: 20px;
-  height: 50vh;
+  height: max-content !important;
 `;
 
 const SummaryTitle = styled.h1`
@@ -184,48 +184,59 @@ const style = {
   p: 4,
 };
 
-const Cart = () => {
+const StyledCheckbox = styled.input`
+  transform: scale(1.8);
+  margin-left: 10px;
+  cursor: pointer;
+`;
+
+const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
+  console.log(refUsersTotal);
   const dispatch = useDispatch();
-  const [stripeToken, setStripeToken] = useState(null);
   const navigate = useNavigate();
-  const quantity = useSelector((state) => state.cart.quantity);
-  const [open, setOpen] = React.useState(false);
+  const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user.currentUser);
+
+  useEffect(() => {
+    if (cart.products.length === 0) {
+      navigate("/");
+    }
+  }, [cart, navigate]);
+
+  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState(""); // Address state
+  const [phoneNumber, setPhoneNumber] = useState(""); // Phone number state
+  const [cashOnDelivery, setCashOnDelivery] = useState(false); // Checkbox state
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  // Handlers for address, phone number, and checkbox
+  const handleAddressChange = (e) => setAddress(e.target.value);
+  const handlePhoneNumberChange = (e) => setPhoneNumber(e.target.value);
+  const handleCheckboxChange = (e) => setCashOnDelivery(e.target.checked);
+
+  // createOrder function
   const createOrder = async () => {
     try {
       const res = await userRequest.post("/orders", {
-        userId: currentUser._id,
-        products: cart.products.map((item) => ({
-          productId: item._id,
-          quantity: item._quantity,
-        })),
+        userId: user?.data?._id || user?._id,
+        products: cart?.products,
         amount: cart.total,
-        address: data.billing_details.address,
+        address: address,
+        phoneNumber: phoneNumber, // Include phone number in the order
+        paymentMethod: cashOnDelivery ? "Cash on Delivery" : "Online Payment",
       });
-      setOrderId(res.data._id);
-    } catch {}
+      console.log(res.data);
+      alert(
+        "Order created successfully! You will receive your order in 24 hours. if you don't receive your order within 24 hours, please contact us."
+      );
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await userRequest.post("/checkout/payment", {
-          tokenId: stripeToken.id,
-          amount: 2000,
-        });
-        console.log(res.data);
-        navigate("/success", { data: res.data });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    stripeToken && makeRequest();
-  }, [stripeToken, navigate]);
-
-  const cart = useSelector((state) => state.cart);
-  console.log(cart.products);
   return (
     <>
       <Container>
@@ -320,15 +331,40 @@ const Cart = () => {
                 marginBottom: "10px",
               }}
             >
-              Cash on delivery{" "}
-              <input
+              Cash on delivery
+              <StyledCheckbox
                 type="checkbox"
-                style={{ transform: "scale(1.9)!important" }}
+                checked={cashOnDelivery}
+                onChange={handleCheckboxChange} // Checkbox handler
               />
             </div>
           </Typography>
           <h4 style={{ marginBottom: "10px" }}>Total = {cart.total} </h4>
-          <Buttonn onClick={handleOpen}>ORDER NOW</Buttonn>
+          <input
+            type="text"
+            placeholder="Enter your complete address"
+            value={address}
+            onChange={handleAddressChange} // Address input handler
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginBottom: "10px",
+              border: " 1px solid black",
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Enter your phone number"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange} // Phone number input handler
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginBottom: "10px",
+              border: " 1px solid black",
+            }}
+          />
+          <Buttonn onClick={createOrder}>ORDER NOW</Buttonn>
         </Box>
       </Modal>
     </>

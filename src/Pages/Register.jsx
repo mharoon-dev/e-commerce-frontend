@@ -89,7 +89,7 @@ const Register = () => {
         })
         .catch((err) => {
           console.log(err);
-          alert(err.response.data);
+          alert(erra);
           // toast.error(err?.response?.data?.message || err.message);
           // dispatch(loginFailure());
         });

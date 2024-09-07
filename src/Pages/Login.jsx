@@ -104,7 +104,8 @@ const Login = () => {
           localStorage.setItem("token", JSON.stringify(res.data.accessToken));
           dispatch(loginSuccess(res.data));
 
-          navigate("/");
+          alert("Login Successful");
+          window.location.reload = "/";
         })
         .catch((err) => {
           console.log(err);

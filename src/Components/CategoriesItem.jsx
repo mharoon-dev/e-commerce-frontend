@@ -43,7 +43,7 @@ export const CategoriesItem = ({ item }) => {
   console.log(item);
   return (
     <Container>
-      <Link to={`/products/${item.cat}`}>
+      <Link to={`/products/${item.name}`}>
         <Image src={item.img} alt="" />
         <Info>
           <Title>{item.title}</Title>
