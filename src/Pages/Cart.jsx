@@ -7,15 +7,15 @@ import { Add, Remove } from "@mui/icons-material";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/urls.jsx";
-import axios from "axios";
+// import { BASE_URL } from "../utils/urls.jsx";
+// import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { userRequest } from "../requestMethod.js";
 import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { resetPrdoucts } from "../redux/Slices/cartSlice.jsx";
 
 // const KEY =
 //   "pk_test_51PDVVW2MdE2JOYS8Rd1YZfj0TgyH2vagXXRrlLYbaihyFv3tng7cgdL7q2PXebA3kqBz8I63lN4bfzpEGhfw5lDs00CXYwLMpm";
@@ -190,8 +190,7 @@ const StyledCheckbox = styled.input`
   cursor: pointer;
 `;
 
-const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
-  console.log(refUsersTotal);
+const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
@@ -224,7 +223,7 @@ const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
         products: cart?.products,
         amount: cart.total,
         address: address,
-        phoneNumber: phoneNumber, // Include phone number in the order
+        phoneNumber: phoneNumber,
         paymentMethod: cashOnDelivery ? "Cash on Delivery" : "Online Payment",
       });
       console.log(res.data);
@@ -232,6 +231,7 @@ const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
         "Order created successfully! You will receive your order in 24 hours. if you don't receive your order within 24 hours, please contact us."
       );
       navigate("/");
+      dispatch(resetPrdoucts());
     } catch (err) {
       console.error(err);
     }
@@ -251,7 +251,7 @@ const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
               </Link>
             </TopButton>
             <TopTexts>
-              <TopText>Shopping Bag ({cart.products.length})</TopText>
+              <TopText>Shopping Bag ({cart?.products?.length})</TopText>
             </TopTexts>
           </Top>
           <Bottom>
@@ -259,17 +259,17 @@ const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
               {cart?.products?.map((product) => (
                 <Product>
                   <ProductDetail>
-                    <Image src={product.img} />
+                    <Image src={product?.img} />
                     <Details>
                       <ProductName>
-                        <b>Product:</b> {product.title}
+                        <b>Product:</b> {product?.title}
                       </ProductName>
                       <ProductId>
-                        <b>ID:</b> {product._id}
+                        <b>ID:</b> {product?._id}
                       </ProductId>
-                      <ProductColor color={product.color} />
+                      <ProductColor color={product?.color} />
                       <ProductSize>
-                        <b>Size:</b> {product.size}
+                        <b>Size:</b> {product?.size}
                       </ProductSize>
                     </Details>
                   </ProductDetail>
@@ -277,11 +277,11 @@ const Cart = ({ refUsersTotal, setRefUsersTotal }) => {
                   <PriceDetail>
                     <ProductAmountContainer>
                       <Add />
-                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <ProductAmount>{product?.quantity}</ProductAmount>
                       <Remove />
                     </ProductAmountContainer>
                     <ProductPrice>
-                      ${product.price * product.quantity}
+                      ${product?.price * product?.quantity}
                     </ProductPrice>
                   </PriceDetail>
                 </Product>

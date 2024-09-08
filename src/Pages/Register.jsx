@@ -68,19 +68,20 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState();
   const [byRefrence, setByRefrence] = useState("");
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (username && email && password) {
+    if (username && email && password && phone) {
       const data = {
         username,
         email,
         password,
-        byRefrence,
+        byRefrence: byRefrence ? byRefrence : null,
+        phoneNumber: phone,
       };
       console.log(data);
-
       api
         .post("/auth/register", data)
         .then((res) => {
@@ -89,9 +90,7 @@ const Register = () => {
         })
         .catch((err) => {
           console.log(err);
-          alert(erra);
-          // toast.error(err?.response?.data?.message || err.message);
-          // dispatch(loginFailure());
+          alert(err);
         });
     } else {
       alert("Please fill all the fields 📝");
@@ -117,6 +116,11 @@ const Register = () => {
             type="password"
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
+          />
+          <Input
+            type="tel"
+            placeholder="03214567892 (easypaise , jazz cash)"
+            onChange={(e) => setPhone(e.target.value)}
           />
           <Input
             type="text"

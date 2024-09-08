@@ -106,6 +106,13 @@ const ModalData = styled.span`
   font-weight: 500;
 `;
 
+const WinDraw = styled.button`
+  padding: 10px 30px;
+  font-size: 20px;
+  margin-top: 15px;
+  background-color: transparent;
+  cursor: pointer;
+`;
 const LogoutButton = styled.button`
   padding: 10px 30px;
   font-size: 20px;
@@ -124,33 +131,37 @@ function Navbar({ refUsersTotal, setRefUsersTotal }) {
     console.log(refUsersTotal);
   }, [refUsersTotal]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (user) {
-        let total = 0;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (user) {
+  //       let total = 0;
 
-        await Promise.all(
-          user?.data?.refrenceUsers.map(async (userId) => {
-            const response = await userRequest.get(`/orders/find/${userId}`);
+  //       await Promise.all(
+  //         user?.data?.refrenceUsers.map(async (userId) => {
+  //           const response = await userRequest.get(`/orders/find/${userId}`);
 
-            response.data.forEach((order) => {
-              let currentAmount = order.amount;
-              total += currentAmount;
-              setRefUsersTotal(total);
-            });
-          })
-        );
-      }
-    };
+  //           response?.data?.forEach((order) => {
+  //             let currentAmount = order.amount;
+  //             total += currentAmount;
+  //             setRefUsersTotal(total);
+  //           });
+  //         })
+  //       );
+  //     }
+  //   };
 
-    fetchData();
-  }, [user]);
+  //   fetchData();
+  // }, [user]);
 
   const handleModalClick = (e) => {
     if (e.target === e.currentTarget) {
       setShowModal(false);
     }
   };
+
+  const winDrawHandle = () => {
+    
+  }
 
   return (
     <>
@@ -227,25 +238,72 @@ function Navbar({ refUsersTotal, setRefUsersTotal }) {
             <ModalData>
               Email: {(user && user?.data?.email) || user?.email}
             </ModalData>
-            {/* {user?.data?.refrenceCode && ( */}
-            <ModalData>
-              Reference Code: {user?.data?.refrenceCode || user?.refrenceCode}
-            </ModalData>
-            {/* // )} */}
-            {/* {user?.data?.byRefrence && ( */}
-            <ModalData>By Reference: {user?.data?.byRefrence}</ModalData>
-            {/* )} */}
-            {/* {user?.data?.refrenceUsers.length > 0 && ( */}
-            <ModalData>
-              Reference Users: {user?.data?.refrenceUsers?.length}
-            </ModalData>
-            {/* )} */}
-            {/* {user?.data?.refrenceUsers?.length > 0 && ( */}
-            <ModalData>Refrence Users Shopping: {refUsersTotal}</ModalData>
-            {/* )} */}
-            {/* {user?.data?.refrenceUsers?.length > 0 && ( */}
-            <ModalData>Discount: {(refUsersTotal / 100) * 10}</ModalData>
-            {/* // )} */}
+
+            {user?.data?.refrenceCode ? (
+              <ModalData>
+                Reference Code:{" "}
+                {user?.data?.refrenceCode || user?.refrenceCode || "No code"}
+              </ModalData>
+            ) : user?.refrenceCode ? (
+              <ModalData>
+                Reference Code:{" "}
+                {user?.data?.refrenceCode || user?.refrenceCode || "No code"}
+              </ModalData>
+            ) : (
+              ""
+            )}
+
+            {user?.data?.byRefrence ? (
+              <ModalData>
+                By Reference:{" "}
+                {user?.data?.byRefrence || user?.byRefrence || "No code"}
+              </ModalData>
+            ) : user?.byRefrence ? (
+              <ModalData>
+                By Reference:{" "}
+                {user?.data?.byRefrence || user?.byRefrence || "No code"}
+              </ModalData>
+            ) : (
+              ""
+            )}
+
+            {user?.data?.refrenceCode ? (
+              <ModalData>
+                Reference Users:{" "}
+                {user?.data?.refrenceUsers?.length ||
+                  user?.refrenceUsers?.length ||
+                  0}
+              </ModalData>
+            ) : user?.refrenceCode ? (
+              <ModalData>
+                Reference Users:{" "}
+                {user?.data?.refrenceUsers?.length ||
+                  user?.refrenceUsers?.length ||
+                  0}
+              </ModalData>
+            ) : (
+              ""
+            )}
+
+            {user?.data?.refrenceCode ? (
+              <ModalData>
+                Bouns: {user?.data?.bouns || user?.bouns || 0}
+              </ModalData>
+            ) : user?.refrenceCode ? (
+              <ModalData>
+                Bouns: {user?.data?.bouns || user?.bouns || 0}
+              </ModalData>
+            ) : (
+              ""
+            )}
+
+            <WinDraw
+              onClick={() => {
+                winDrawHandle();
+              }}
+            >
+              Win Draw
+            </WinDraw>
             <LogoutButton
               onClick={() => {
                 localStorage.removeItem("token");
