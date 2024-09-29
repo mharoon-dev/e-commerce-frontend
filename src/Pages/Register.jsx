@@ -4,6 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { BASE_URL } from "../../../admin/src/utils/urls";
 import { useNavigate } from "react-router-dom";
+import { userRequest } from "../requestMethod.js";
+import { useDispatch } from "react-redux";
 
 const Container = styled.div`
   width: 100vw;
@@ -64,12 +66,14 @@ export const api = axios.create({
 });
 
 const Register = () => {
-  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [file, setFile] = useState();
   const [phone, setPhone] = useState();
   const [byRefrence, setByRefrence] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -82,7 +86,7 @@ const Register = () => {
         phoneNumber: phone,
       };
       console.log(data);
-      api
+      userRequest
         .post("/auth/register", data)
         .then((res) => {
           console.log(res.data);
@@ -90,11 +94,68 @@ const Register = () => {
         })
         .catch((err) => {
           console.log(err);
-          alert(err);
+          alert(err.response.data);
         });
     } else {
       alert("Please fill all the fields 📝");
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const user = {
+      username,
+      email,
+      password,
+      byRefrence,
+      refrenceCode: "No Refrence Code",
+      phoneNumber: +phone,
+      // img: downloadURL,
+    };
+    console.log(user);
+    userRequest
+      .post("/auth/register", user)
+      .then((res) => {
+        console.log(res);
+        alert("User has been created");
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
+
+    // const fileName = new Date().getTime() + file.name;
+    // const storage = getStorage(app);
+    // const storageRef = ref(storage, fileName);
+    // const uploadTask = uploadBytesResumable(storageRef, file);
+
+    // uploadTask.on(
+    //   "state_changed",
+    //   (snapshot) => {
+    //     const progress =
+    //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    //     console.log("Upload is " + progress + "% done");
+    //     switch (snapshot.state) {
+    //       case "paused":
+    //         console.log("Upload is paused");
+    //         break;
+    //       case "running":
+    //         console.log("Upload is running");
+    //         break;
+    //       default:
+    //     }
+    //   },
+    //   (error) => {
+    //     // Handle unsuccessful uploads
+    //   },
+    //   () => {
+    //     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+
+    //     });
+    //   }
+    // );
   };
 
   return (

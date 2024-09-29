@@ -10,7 +10,6 @@ import Footer from "../Components/Footer";
 const Home = ({ refUsersTotal, setRefUsersTotal }) => {
   return (
     <>
-      <Announcement />
       <Navbar
         refUsersTotal={refUsersTotal}
         setRefUsersTotal={setRefUsersTotal}
