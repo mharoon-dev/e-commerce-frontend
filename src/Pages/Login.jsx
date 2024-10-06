@@ -103,13 +103,13 @@ const Login = () => {
           console.log(res.data);
           localStorage.setItem("token", JSON.stringify(res.data.accessToken));
           dispatch(loginSuccess(res.data));
-
           alert("Login Successful");
           window.location.reload = "/";
         })
         .catch((err) => {
           console.log(err);
           dispatch(loginFailure());
+          alert(err?.response?.data);
         });
     } else {
       toast.error("Please fill all the fields 📝");

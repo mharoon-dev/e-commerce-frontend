@@ -90,6 +90,7 @@ const Register = () => {
         .post("/auth/register", data)
         .then((res) => {
           console.log(res.data);
+          alert("User has been created");
           navigate("/login");
         })
         .catch((err) => {

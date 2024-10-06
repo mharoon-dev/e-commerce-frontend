@@ -83,9 +83,9 @@ const Product = ({ item }) => {
             <SearchOutlined />
           </Link>
         </Icon>
-        <Icon>
+        {/* <Icon>
           <FavoriteBorderOutlined />
-        </Icon>
+        </Icon> */}
       </Info>
     </Container>
   );

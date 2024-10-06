@@ -15,7 +15,7 @@ const Home = ({ refUsersTotal, setRefUsersTotal }) => {
         setRefUsersTotal={setRefUsersTotal}
       />
       <Slider />
-      <Categories />
+      {/* <Categories /> */}
       <Products />
       {/* <NewsLetter /> */}
       <Footer />

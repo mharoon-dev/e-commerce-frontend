@@ -137,7 +137,7 @@ function Navbar({ refUsersTotal, setRefUsersTotal }) {
     // console.log("hi");
     try {
       api
-        .post("/windraw", {
+        .post("/windraws", {
           userDetails: user?.data,
           amount: user?.data?.bonus,
         })
@@ -145,6 +145,7 @@ function Navbar({ refUsersTotal, setRefUsersTotal }) {
           console.log(res.data);
           alert("your request has been submited!");
           setShowModal(false);
+          window.location.reload();
         })
         .catch((err) => {
           console.log(err);
